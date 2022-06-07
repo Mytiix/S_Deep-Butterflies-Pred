@@ -1,7 +1,7 @@
 {
     "name": "Deep-Butterflies-Pred",
     "container-image": {
-        "image": "cytomineuliege/s_deep-butterflies-pred",
+        "image": "mytiix/s_deep-butterflies-pred",
         "type": "singularity"
     },
     "description": "Prediction phase of the Deep-Butterflies Deep Learning approach",
