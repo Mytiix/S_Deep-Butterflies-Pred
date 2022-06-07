@@ -74,7 +74,8 @@ def main(argv):
 		else:
 			images_ids = [int(image_id) for image_id in cj.parameters.images_to_predict.split(',')]
 			pred_images = [image_id_to_object[image_id] for image_id in images_ids]
-
+		pred_images.sort()
+		
 
 		# Fetch data from the trained model
 		tr_model_job = Job().fetch(cj.parameters.model_to_use)
