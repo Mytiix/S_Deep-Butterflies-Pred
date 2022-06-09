@@ -83,13 +83,13 @@ def main(argv):
 
 		jobs_ids = [int(job_id) for job_id in cj.parameters.model_to_use.split(',')]
 		for job_id in jobs_ids:
-			tr_model_job = Job().fetch(cj.parameters.model_to_use)
+			tr_model_job = Job().fetch(job_id)
 			attached_files = AttachedFileCollection(tr_model_job).fetch()
-			tr_model = find_by_attribute(attached_files, 'filename', '%d_model.hdf5' % cj.parameters.model_to_use)
-			tr_model_filepath = in_path + '%d_model.hdf5' % cj.parameters.model_to_use
+			tr_model = find_by_attribute(attached_files, 'filename', '%d_model.hdf5' % job_id)
+			tr_model_filepath = in_path + '%d_model.hdf5' % job_id
 			tr_model.download(tr_model_filepath, override=True)
-			tr_parameters = find_by_attribute(attached_files, 'filename', '%d_parameters.joblib' % cj.parameters.model_to_use)
-			tr_parameters_filepath = in_path + '%d_parameters.joblib' % cj.parameters.model_to_use
+			tr_parameters = find_by_attribute(attached_files, 'filename', '%d_parameters.joblib' % job_id)
+			tr_parameters_filepath = in_path + '%d_parameters.joblib' % job_id
 			tr_parameters.download(tr_parameters_filepath, override=True)
 
 			# Load fetched data
