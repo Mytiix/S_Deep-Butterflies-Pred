@@ -155,7 +155,7 @@ def main(argv):
 		for i in range(len(jobs_ids)):
 			for j, image in enumerate(pred_images):
 				for k in range(parameters_hash[i]['N']):
-					lm = Point(pred_landmarks[i][j][k][0], image.height - pred_landmarks[i][j][k][1])
+					lm = Point(pred_landmarks_list[i][j][k][0], image.height - pred_landmarks_list[i][j][k][1])
 					annotation_collection.append(Annotation(location=lm.wkt, id_image=image.id, id_terms=[parameters_hash[i]['cytomine_id_terms'][k]], id_project=cj.parameters.cytomine_id_project))
 		annotation_collection.save()
 
@@ -177,9 +177,15 @@ def main(argv):
 				image_height = pred_images[i].height
 
 				# Sort landmarks in accordance to their name
-				lm = np.concatenate(*landmarks)
-				lm_ids = np.concatenate(parameters_hash[i]['cytomine_id_terms'])
+				lm = np.concatenate(landmarks)
+				lm_ids = [parameters_hash[j]['cytomine_id_terms'] for j in range(len(jobs_ids))]
+				lm_ids = np.concatenate(lm_ids)
 				lm_names = [terms_names[lm_id] for lm_id in lm_ids]
+				print('\n\n')
+				print(lm_names)
+				print('\n\n')
+				print(np.argsort(lm_names))
+				print('\n\n')
 				lm = lm[np.argsort(lm_names)]
 
 				# Write number of landmarks
@@ -187,12 +193,17 @@ def main(argv):
 
 				# Write landmarks
 				for landmark in lm:
-					file.write("%.5f %.5f\n" % (landmark[0], image_height - landmark[1]))
+					f.write("%.5f %.5f\n" % (landmark[0], image_height - landmark[1]))
 
 				# Write image name and scale
-				file.write('IMAGE='+image_name+'\n')
-				file.write('SCALE=x.xxxxxx\n')
+				f.write('IMAGE='+image_name+'\n')
+				f.write('SCALE=x.xxxxxx\n')
 
+
+		# Upload TPS file to Cytomine
+		job_data = JobData(id_job=cj.job.id, key='Prediction TPS file', filename=f'{cj.job.id}.TPS')
+		job_data = job_data.save()
+		job_data.upload(f'{cj.job.id}.TPS')
 
 		cj.job.update(status=Job.TERMINATED, progress=100, statusComment='Job terminated.')
 
