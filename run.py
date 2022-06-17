@@ -107,7 +107,7 @@ def main(argv):
 		## 4. Apply rescale to input
 		cj.job.update(progress=50, statusComment='Rescaling images...')
 
-		org_images = glob.glob(images_path+'*.tif')
+		org_images = sorted(glob.glob(images_path+'*.tif'))
 		for i in range(len(org_images)):
 			image = cv.imread(org_images[i], cv.IMREAD_UNCHANGED)
 			im_name = os.path.basename(org_images[i])[:-4]
@@ -118,7 +118,7 @@ def main(argv):
 		## 5. Construct testing set with tensorflow and predict landmarks for each model
 		cj.job.update(progress=80, statusComment='Predicting landmarks...')
 
-		test_images = glob.glob(rescaled_images_path+'*.png')
+		test_images = sorted(glob.glob(rescaled_images_path+'*.png'))
 
 		pred_landmarks_list = []
 		for i in range(len(jobs_ids)):
@@ -181,11 +181,6 @@ def main(argv):
 				lm_ids = [parameters_hash[j]['cytomine_id_terms'] for j in range(len(jobs_ids))]
 				lm_ids = np.concatenate(lm_ids)
 				lm_names = [terms_names[lm_id] for lm_id in lm_ids]
-				print('\n\n')
-				print(lm_names)
-				print('\n\n')
-				print(np.argsort(lm_names))
-				print('\n\n')
 				lm = lm[np.argsort(lm_names)]
 
 				# Write number of landmarks
