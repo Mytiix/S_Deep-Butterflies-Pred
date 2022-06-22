@@ -72,7 +72,10 @@
             "name": "CytomineJob ID of the model(s) to use",
             "set-by-server": false,
             "optional": false,
-            "type": "String",
+            "type": "ListDomain",
+	    	"uri": "/api/job.json?project=$currentProject$",
+	    	"uri-print-attribute": "id",
+	    	"uri-sort-attribute": "id"
         }
     ]
 }
