@@ -17,6 +17,7 @@
 # */
 
 __author__ = "Marganne Louis <louis.marganne@student.uliege.be>"
+__contributors__ = ["Navdeep Kumar <nkumar@uliege.be>"]
 
 
 from cytomine.models import ImageInstanceCollection, Job, AttachedFileCollection, Annotation, AnnotationCollection, JobData, TermCollection
