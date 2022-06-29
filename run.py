@@ -178,8 +178,6 @@ def main(argv):
 				image_height = pred_images[i].height
 				prop = Property(pred_images[i]).fetch(key='scale')
 				image_scale = 'x.xxxxxx' if prop == False else prop.value
-				if prop == False:
-					image_scale = 'x.xxxxxx'
 
 				# Sort landmarks in accordance to their name
 				lm = np.concatenate(landmarks)
