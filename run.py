@@ -20,7 +20,7 @@ __author__ = "Marganne Louis <louis.marganne@student.uliege.be>"
 __contributors__ = ["Navdeep Kumar <nkumar@uliege.be>"]
 
 
-from cytomine.models import ImageInstanceCollection, Job, AttachedFileCollection, Annotation, AnnotationCollection, JobData, TermCollection
+from cytomine.models import ImageInstanceCollection, Job, AttachedFileCollection, Annotation, AnnotationCollection, JobData, TermCollection, Property
 from cytomine import CytomineJob
 
 from tensorflow.keras.models import load_model
@@ -176,6 +176,10 @@ def main(argv):
 				# Get info about current image
 				image_name = pred_images[i].filename
 				image_height = pred_images[i].height
+				prop = Property(pred_images[i]).fetch(key='scale')
+				image_scale = 'x.xxxxxx' if prop == False else prop.value
+				if prop == False:
+					image_scale = 'x.xxxxxx'
 
 				# Sort landmarks in accordance to their name
 				lm = np.concatenate(landmarks)
@@ -193,7 +197,7 @@ def main(argv):
 
 				# Write image name and scale
 				f.write('IMAGE='+image_name+'\n')
-				f.write('SCALE=x.xxxxxx\n')
+				f.write('SCALE='+image_scale+'\n')
 
 
 		# Upload TPS file to Cytomine
