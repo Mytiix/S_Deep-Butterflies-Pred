@@ -177,6 +177,7 @@ def main(argv):
 				image_name = pred_images[i].filename
 				image_height = pred_images[i].height
 
+				# Fetch scale
 				try:
 					prop = Property(pred_images[i]).fetch(key='scale')
 					image_scale = prop.value
