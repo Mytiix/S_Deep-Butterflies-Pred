@@ -176,8 +176,16 @@ def main(argv):
 				# Get info about current image
 				image_name = pred_images[i].filename
 				image_height = pred_images[i].height
-				prop = Property(pred_images[i]).fetch(key='scale')
-				image_scale = 'x.xxxxxx' if prop == False else prop.value
+
+				try:
+					prop = Property(pred_images[i]).fetch(key='scale')
+					image_scale = prop.value
+				except AttributeError:
+					try:
+						prop = Property(pred_images[i].baseImage).fetch(key='scale')
+						image_scale = prop.value
+					except AttributeError:
+						image_scale = 'x.xxxxxx'
 
 				# Sort landmarks in accordance to their name
 				lm = np.concatenate(landmarks)
