@@ -20,7 +20,7 @@ __author__ = "Marganne Louis <louis.marganne@student.uliege.be>"
 __contributors__ = ["Navdeep Kumar <nkumar@uliege.be>"]
 
 
-from cytomine.models import ImageInstanceCollection, Job, AttachedFileCollection, Annotation, AnnotationCollection, JobData, TermCollection, Property
+from cytomine.models import ImageInstanceCollection, Job, AttachedFileCollection, Annotation, AnnotationCollection, JobData, TermCollection, Property, AbstractImage
 from cytomine import CytomineJob
 
 from tensorflow.keras.models import load_model
@@ -183,7 +183,8 @@ def main(argv):
 					image_scale = prop.value
 				except AttributeError:
 					try:
-						prop = Property(pred_images[i].baseImage).fetch(key='scale')
+						abstract_image = AbstractImage().fetch(pred_images[i].baseImage)
+						prop = Property(abstract_image).fetch(key='scale')
 						image_scale = prop.value
 					except AttributeError:
 						image_scale = 'x.xxxxxx'
